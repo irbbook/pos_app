@@ -5,13 +5,15 @@ quarkus:
     port: 8080
   datasource:
     db-kind: postgresql
-    username: myuser
-    password: mypassword
+#    username: myuser
+#    password: mypassword
+    username: neondb_owner
+    password: npg_Zney6KjL1WNv
     jdbc:
-      url: jdbc:postgresql://192.168.2.103:5432/POS_DB
+#      url: jdbc:postgresql://192.168.2.103:5432/POS_DB
+      url: jdbc:postgresql://ep-holy-mouse-a1putfgb-pooler.ap-southeast-1.aws.neon.tech:5432/neondb
   hibernate-orm:
     database:
       generation: update  # Use `none`, `update`, `validate`, or `drop-and-create`
     log:
-      sql: true
-
+      sql: false

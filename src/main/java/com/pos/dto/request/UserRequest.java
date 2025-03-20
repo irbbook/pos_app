@@ -1,11 +1,10 @@
-package com.example.dto.request;
+package com.pos.dto.request;
 
-import com.example.util.enums.Role;
 import lombok.Data;
 
 @Data
 public class UserRequest {
     private String username;
     private String password;
-    private Role role;
+    private String role;
 }

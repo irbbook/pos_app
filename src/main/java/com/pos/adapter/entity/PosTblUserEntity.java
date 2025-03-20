@@ -1,6 +1,5 @@
-package com.example.adapter.entity;
+package com.pos.adapter.entity;
 
-import com.example.util.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,9 +28,8 @@ public class PosTblUserEntity {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "ROLE", nullable = false)
-    private Role role; // Enum: ADMIN, CASHIER, STOCK_MANAGER
+    private String role;
 
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean isActive = true;

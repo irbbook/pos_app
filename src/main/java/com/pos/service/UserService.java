@@ -1,10 +1,12 @@
-package com.example.service;
+package com.pos.service;
 
-import com.example.adapter.entity.PosTblUserEntity;
-import com.example.adapter.repository.PosTblUserRepository;
-import com.example.dto.model.response.ApiResponse;
-import com.example.dto.request.UserRequest;
-import com.example.util.exception.DuplicateDataException;
+import com.pos.adapter.entity.PosTblUserEntity;
+import com.pos.adapter.repository.PosTblUserRepository;
+import com.pos.dto.model.response.ApiResponse;
+import com.pos.dto.request.UserRequest;
+import com.pos.util.constants.UserConstants;
+import com.pos.util.exception.DuplicateDataException;
+import com.pos.util.exception.NotFoundException;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -39,17 +41,41 @@ public class UserService {
                 .password(request.getPassword())
                 .role(request.getRole())
                 .isActive(Boolean.TRUE)
-                .createdBy("POS_USER")
+                .createdBy(UserConstants.ROLE.USER)
                 .build();
     }
 
     public ApiResponse<List<PosTblUserEntity>> getAllUser() {
         try {
-            List<PosTblUserEntity> allUser =  posTblUserRepository.listAll();
+            List<PosTblUserEntity> allUser = posTblUserRepository.listAll();
             return new ApiResponse<>(Response.Status.OK.getStatusCode(), Response.Status.OK.getReasonPhrase(), allUser);
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.error("Unexpected error: " + e.getMessage());
             throw new RuntimeException("Internal server error");
         }
+    }
+
+    public ApiResponse<String> updateUser(String username, UserRequest request) {
+
+        var existUser = posTblUserRepository.findByUsername(username);
+        if (existUser == null) {
+            throw new NotFoundException("User with username " + username + " not found");
+        }
+        existUser.setUsername(request.getUsername());
+        existUser.setPassword(request.getPassword());
+        existUser.setRole(request.getRole());
+        existUser.setUpdatedBy("POS_USER");
+        posTblUserRepository.persist(existUser);
+        return new ApiResponse<>(Response.Status.NO_CONTENT.getStatusCode(), "User updated successful", null);
+    }
+
+    @Transactional
+    public ApiResponse<String> deleteUser(String username) {
+        var existUser = posTblUserRepository.findByUsername(username);
+        if (existUser == null) {
+            throw new NotFoundException("User with username " + username + " not found");
+        }
+        posTblUserRepository.delete("username",username);
+        return new ApiResponse<>(Response.Status.NO_CONTENT.getStatusCode(), "User deleted successful", null);
     }
 }

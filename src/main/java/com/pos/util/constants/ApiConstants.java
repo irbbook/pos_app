@@ -1,4 +1,4 @@
-package com.example.util.constants;
+package com.pos.util.constants;
 
 public class ApiConstants {
     private ApiConstants() {
@@ -46,9 +46,4 @@ public class ApiConstants {
     public static final String FILE_UPLOAD_FAILED = "File upload failed";
     public static final String FILE_SIZE_EXCEEDED = "File size exceeds the allowed limit";
     public static final String UNSUPPORTED_FILE_TYPE = "Unsupported file format";
-
-    public static final class user_status {
-        public static final String ACTIVE = "ACTIVE";
-        public static final String INACTIVE = "INACTIVE";
-    }
 }
